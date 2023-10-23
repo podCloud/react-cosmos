@@ -1,11 +1,12 @@
 import { DevServerPluginArgs, startFixtureWatcher } from 'react-cosmos';
-import { pickRendererUrl } from 'react-cosmos-core';
-import { createServer } from 'vite';
-import { createCosmosViteConfig } from './createCosmosViteConfig.js';
 import {
   reactCosmosViteRollupPlugin,
   userImportsResolvedModuleId,
 } from './reactCosmosViteRollupPlugin.js';
+
+import { pickRendererUrl } from 'react-cosmos-core';
+import { createServer } from 'vite';
+import { createCosmosViteConfig } from './createCosmosViteConfig.js';
 
 export async function viteDevServerPlugin({
   cosmosConfig,
@@ -30,7 +31,7 @@ export async function viteDevServerPlugin({
     server: {
       // https://vitejs.dev/config/server-options.html#server-host
       host: '0.0.0.0',
-      port: parseInt(new URL(rendererUrl).port, 10),
+      port: +(cosmosConfig.vite?.port) > 0 ? cosmosConfig.vite!.port : parseInt(new URL(rendererUrl).port, 10),
     },
     plugins: [reactCosmosViteRollupPlugin(cosmosConfig, cosmosViteConfig)],
   });
